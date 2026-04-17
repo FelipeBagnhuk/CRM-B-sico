@@ -1,0 +1,46 @@
+from fastapi import HTTPException
+from fastapi.responses import RedirectResponse
+
+class TestRotasClienteAPI:
+    @pytest.mark.asyncio
+    async def test_listar_clientes_retorna_lista_vazia(self, mock_cliente_repositorio):
+        mock_cliente_repositorio.listar_clientes.return_value = []
+
+        resultado = await cliente.listar_clientes(mock_cliente_repositorio)
+
+        assert resultado == []
+        mock_cliente_repositorio.listar_clientes.assert_called_once()
+
+    @pytest.fixtue
+    def cliente_repositorio(mock_banco_dados):
+        return TestClienteRepositorio(mock_banco_dados)
+
+
+    class TestClienteRepositorio:
+        @pytest.mark.asyncio
+        async def test_listar_clientes_retorna_lista_vazia(self, cliente_repositorio, mock_banco_dados):
+            mock_banco_dados.cursor.fetchall.return_value = []
+
+            resultado = await cliente_repositorio.listar_clientes()
+
+            assert resultado == []
+            mock_banco_dados.cursor.execute.assert_called_once_with(
+                "SELECT id, nome, email, telefone FROM clientes"
+            )
+
+    @pytest.mark.asyncio
+    async def test_listar_clientes_retorna_lista_com_clientes(self, cliente_repositorio, mock_banco_dados):
+        mock_banco_dados.cursor.fetchall.return_value = [
+            (1, "João Silva", "joao@example.com", "11999999999"),
+            (2, "Maria Santos", "maria@example.com", "11888888888")
+        ]
+
+        resultado = await cliente_repositorio.listar_clientes()
+
+        assert len(resultado) == 2
+        assert resultado[0].id == 1
+        assert resultado[0].nome == "João Silva"
+        assert resultado[0].email == "joao@example.com"
+        assert resultado[1].id == 2
+        assert resultado[1].nome == "Maria Santos"
+        assert resultado[1].email == "maria@example.com"
