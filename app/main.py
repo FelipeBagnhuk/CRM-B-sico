@@ -20,6 +20,12 @@ app = FastAPI(
     version="1.0.0"
 )
 
+app_teste = FastAPI(
+    title="Teste API", 
+    description="API de teste",
+    version="1.0.1"
+)
+
 
 
 app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static" / "static")), name="static")
@@ -30,11 +36,16 @@ app.include_router(login_router)
 app.include_router(register_router)
 
 
+@app_teste.get("/check_app_status")
+async def status_teste():
+    return {"status": "Aplicação funcionando!"}  # Comando: cd CRM-B-sico && uvicorn app.main:app_teste --host 0.0.0.0 --port 8001 --reload
 
+#Para acessar a documentação:
+#http://localhost:8001/docs#
 
 @app.get("/health")
 async def status():
-    return {"status": "Ok"}
+    return {"status": "Ok"}  # Comando: cd CRM-B-sico && uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 
 
 @app.get("/", response_class=HTMLResponse)

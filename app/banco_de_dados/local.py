@@ -37,6 +37,13 @@ class LocationDB():
                     password TEXT NOT NULL
     )
 """)
+            cursor.execute("""
+                CREATE TABLE IF NOT EXISTS games (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    name TEXT NOT NULL,
+                    gender TEXT NOT NULL
+    )
+""")
             # Check if password column exists, if not, add it
             cursor.execute("PRAGMA table_info(users)")
             columns = [row[1] for row in cursor.fetchall()]
