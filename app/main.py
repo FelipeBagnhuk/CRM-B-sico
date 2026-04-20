@@ -9,6 +9,7 @@ from fastapi.staticfiles import StaticFiles
 from app.rotas.client import router, front_router
 from app.rotas.login import router as login_router
 from app.rotas.register import router as register_router
+from app.rotas.games import router as games_router
 from app.config import BASE_DIR
 from app.autentication_diddleware import AuthenticationToken
 
@@ -34,11 +35,12 @@ app.include_router(router)
 app.include_router(front_router)
 app.include_router(login_router)
 app.include_router(register_router)
+app_teste.include_router(games_router)
 
 
 @app_teste.get("/check_app_status")
 async def status_teste():
-    return {"status": "Aplicação funcionando!"}  # Comando: cd CRM-B-sico && uvicorn app.main:app_teste --host 0.0.0.0 --port 8001 --reload
+    return {"status": "Aplicação funcionando!"}  # Comando dentro do main: uvicorn app.main:app_teste --host 0.0.0.0 --port 8001 --reload
 
 #Para acessar a documentação:
 #http://localhost:8001/docs#
